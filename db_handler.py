@@ -1,8 +1,12 @@
 import sqlite3
 
 def create_db():
+
     conn = sqlite3.connect('packets.db')
     c = conn.cursor()
+
+    # c.execute('''DROP TABLE IF EXISTS packets''')
+    # c.execute('''DROP TABLE IF EXISTS frames''')
     
     # Create table for packets (IP + TCP)
     c.execute('''CREATE TABLE IF NOT EXISTS packets (
