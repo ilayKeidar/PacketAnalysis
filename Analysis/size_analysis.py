@@ -35,11 +35,11 @@ def get_total_size():
             
     conn.close()
 
-    mb_sent = convert_bytes(sent)
-    mb_received = convert_bytes(received)
+    sent = convert_bytes(sent)
+    received = convert_bytes(received)
 
-    print(f"sent: {mb_sent}")
-    print(f"received: {mb_received}")    
+    print(f"sent: {sent}")
+    print(f"received: {received}")    
 
 
 get_total_size()
