@@ -2,13 +2,15 @@ from scapy.all import sniff
 
 from db_handler import insert_packet, insert_frame
 import Sniffing.constants as constants
-from packet import Packet
-from frame import Frame
+from Objects.packet import Packet
+from Objects.frame import Frame
 from Sniffing.user_data import IP_ADDRESS, MAC_ADDRESS
 
 
-
 def create_packet_objects(packet, ip_address, mac_address):
+
+    size = len(packet)
+
     if packet.haslayer('IP') and packet.haslayer('TCP'):
         src_ip = packet['IP'].src
         dst_ip = packet['IP'].dst
@@ -17,8 +19,9 @@ def create_packet_objects(packet, ip_address, mac_address):
         protocol = packet['IP'].proto
         timestamp = packet['IP'].time
 
+        # insert only the packets that are related to the current device
         if src_ip == ip_address or dst_ip == ip_address:
-            packet_obj = Packet(src_ip, dst_ip, src_port, dst_port, protocol, timestamp)
+            packet_obj = Packet(src_ip, dst_ip, src_port, dst_port, protocol, size, timestamp)
             insert_packet(packet_obj)
             print(packet_obj.display())
     
@@ -30,7 +33,7 @@ def create_packet_objects(packet, ip_address, mac_address):
         protocol = packet["Ether"].type
 
         if src_mac == mac_address or dst_mac == mac_address:
-            frame_obj = Frame(src_mac, dst_mac, protocol, timestamp)
+            frame_obj = Frame(src_mac, dst_mac, protocol, size, timestamp)
             insert_frame(frame_obj)
             print(frame_obj.display())
 

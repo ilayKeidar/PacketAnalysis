@@ -16,6 +16,7 @@ def create_db():
                     src_port INTEGER,
                     dst_port INTEGER,
                     protocol INTEGER,
+                    size INTEGER,
                     timestamp REAL)''')
     
     # Create table for frames (Ethernet)
@@ -24,6 +25,7 @@ def create_db():
                     src_mac TEXT,
                     dst_mac TEXT,
                     protocol INTEGER,
+                    size INTEGER,
                     timestamp REAL)''')
     
     conn.commit()
@@ -32,18 +34,18 @@ def create_db():
 def insert_packet(packet_obj):
     conn = sqlite3.connect('packets.db')
     c = conn.cursor()
-    c.execute('''INSERT INTO packets (src_ip, dst_ip, src_port, dst_port, protocol, timestamp) 
-                 VALUES (?, ?, ?, ?, ?, ?)''', 
+    c.execute('''INSERT INTO packets (src_ip, dst_ip, src_port, dst_port, protocol, size, timestamp) 
+                 VALUES (?, ?, ?, ?, ?, ?, ?)''', 
               (packet_obj.src_ip, packet_obj.dst_ip, packet_obj.src_port, 
-               packet_obj.dst_port, packet_obj.protocol, packet_obj.timestamp))
+               packet_obj.dst_port, packet_obj.protocol, packet_obj.size, packet_obj.timestamp))
     conn.commit()
     conn.close()
 
 def insert_frame(frame_obj):
     conn = sqlite3.connect('packets.db')
     c = conn.cursor()
-    c.execute('''INSERT INTO frames (src_mac, dst_mac, protocol, timestamp) 
-                 VALUES (?, ?, ?, ?)''', 
-              (frame_obj.src_mac, frame_obj.dst_mac, frame_obj.protocol, frame_obj.timestamp))
+    c.execute('''INSERT INTO frames (src_mac, dst_mac, protocol, size, timestamp) 
+                 VALUES (?, ?, ?, ?, ?)''', 
+              (frame_obj.src_mac, frame_obj.dst_mac, frame_obj.protocol, frame_obj.size, frame_obj.timestamp))
     conn.commit()
     conn.close()
