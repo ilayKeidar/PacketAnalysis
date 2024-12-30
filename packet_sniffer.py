@@ -1,10 +1,8 @@
 from scapy.all import sniff
 
 from db_handler import insert_packet, insert_frame
-import constants as constants
 from Objects.packet import Packet
 from Objects.frame import Frame
-from user_data import IP_ADDRESS, MAC_ADDRESS
 
 
 def create_packet_objects(packet, ip_address, mac_address):
@@ -39,12 +37,14 @@ def create_packet_objects(packet, ip_address, mac_address):
 
     return create_packet_objects
 
-def sniffer_wrapper(packet):
-    create_packet_objects(packet, IP_ADDRESS, MAC_ADDRESS)   
 
-# sniffer = create_sniffer(IP_ADDRESS, MAC_ADDRESS)
-print(IP_ADDRESS)  
-print(MAC_ADDRESS)
+def start_sniffer(interface, sniff_time, ip_address, mac_address):
+    print(f"Starting packet sniffer on interface: {interface}")
+    print(f"Monitoring IP: {ip_address}, MAC: {mac_address}")
 
-sniff(iface=constants.interface, prn=sniffer_wrapper, timeout=constants.sniff_time) 
+    def sniffer_wrapper(packet):
+        create_packet_objects(packet, ip_address, mac_address)
+
+    sniff(iface=interface, prn=sniffer_wrapper, timeout=sniff_time)
+    print("Packet sniffer stopped.")
 
