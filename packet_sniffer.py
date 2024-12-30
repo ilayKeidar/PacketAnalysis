@@ -1,10 +1,10 @@
 from scapy.all import sniff
 
 from db_handler import insert_packet, insert_frame
-import Sniffing.constants as constants
+import constants as constants
 from Objects.packet import Packet
 from Objects.frame import Frame
-from Sniffing.user_data import IP_ADDRESS, MAC_ADDRESS
+from user_data import IP_ADDRESS, MAC_ADDRESS
 
 
 def create_packet_objects(packet, ip_address, mac_address):

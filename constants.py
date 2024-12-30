@@ -1,2 +1,2 @@
-sniff_time = 8
+sniff_time = 25
 interface = "Wi-Fi"

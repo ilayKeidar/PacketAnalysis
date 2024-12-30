@@ -1,5 +1,19 @@
 import sqlite3
-from Sniffing.user_data import IP_ADDRESS, MAC_ADDRESS
+IP_ADDRESS = '10.100.102.48'
+MAC_ADDRESS = '9a:22:ef:fa:fa:b7'
+
+# convert the bytes to the relevant unit
+def convert_bytes(bytes):
+    units = ["B", "KB", "MB", "GB"]
+
+    unit_index = 0
+    while bytes >= 1024:
+        bytes /= 1024
+        unit_index += 1
+    
+    bytes = round(bytes, 2)
+    
+    return f"{bytes} {units[unit_index]}"
 
 
 def get_total_size():
@@ -10,19 +24,22 @@ def get_total_size():
     received = 0
     sent = 0
 
-    c.execute('SELECT * FROM packets')
+    c.execute('SELECT src_ip, dst_ip, size FROM packets')
     packets = c.fetchall()
 
-    for src_ip, dst_ip, size in packets:
-        if src_ip == IP_ADDRESS:
-            sent += size
-        elif dst_ip == IP_ADDRESS:
-            received += size
+    for packet in packets:
+        if packet[0] == IP_ADDRESS:
+            sent += packet[2]
+        elif packet[1] == IP_ADDRESS:
+            received += packet[2]
             
     conn.close()
 
-    print(f"sent: {sent} bytes")
-    print(f"received: {received} bytes")    
+    mb_sent = convert_bytes(sent)
+    mb_received = convert_bytes(received)
+
+    print(f"sent: {mb_sent}")
+    print(f"received: {mb_received}")    
 
 
 get_total_size()

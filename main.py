@@ -1,4 +1,4 @@
-from Sniffing.packet_sniffer import sniff
+from packet_sniffer import sniff
 from db_handler import create_db
 
 create_db()
