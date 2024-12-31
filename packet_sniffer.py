@@ -4,24 +4,34 @@ from db_handler import insert_packet, insert_frame
 from Objects.packet import Packet
 from Objects.frame import Frame
 
-
+count = 0
+count2 = 0
 def create_packet_objects(packet, ip_address, mac_address):
-
+    global count 
+    global count2
     size = len(packet)
-
-    if packet.haslayer('IP') and packet.haslayer('TCP'):
+    print(f"{count2}======{packet.summary()}")
+    count2 += 1
+    if packet.haslayer('IP') and (packet.haslayer('TCP') or packet.haslayer('UDP')):        
         src_ip = packet['IP'].src
         dst_ip = packet['IP'].dst
-        src_port = packet['TCP'].sport
-        dst_port = packet['TCP'].dport
         protocol = packet['IP'].proto
         timestamp = packet['IP'].time
+
+        if packet.haslayer('TCP'):
+            src_port = packet['TCP'].sport
+            dst_port = packet['TCP'].dport
+        elif packet.haslayer('UDP'):
+            src_port = packet['UDP'].sport
+            dst_port = packet['UDP'].dport
+        
 
         # insert only the packets that are related to the current device
         if src_ip == ip_address or dst_ip == ip_address:
             packet_obj = Packet(src_ip, dst_ip, src_port, dst_port, protocol, size, timestamp)
             insert_packet(packet_obj)
-            print(packet_obj.display())
+            count += 1
+            print(f"{count}. {packet_obj.display()}")
     
     
     elif packet.haslayer("Ether"):
@@ -45,6 +55,6 @@ def start_sniffer(interface, sniff_time, ip_address, mac_address):
     def sniffer_wrapper(packet):
         create_packet_objects(packet, ip_address, mac_address)
 
-    sniff(iface=interface, prn=sniffer_wrapper, timeout=sniff_time)
-    print("Packet sniffer stopped.")
+    sniff(iface=interface, prn=sniffer_wrapper, timeout=sniff_time, store=False)
+    print("Packet sniffer ended.")
 

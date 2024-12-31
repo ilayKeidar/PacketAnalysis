@@ -1,13 +1,17 @@
 import sqlite3
 
+def clear_db():
+    conn = sqlite3.connect("packets.db")
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM packets")  
+    conn.commit()
+    conn.close()
+
 def create_db():
 
     conn = sqlite3.connect('packets.db')
     c = conn.cursor()
 
-    # c.execute('''DROP TABLE IF EXISTS packets''')
-    # c.execute('''DROP TABLE IF EXISTS frames''')
-    
     # Create table for packets (IP + TCP)
     c.execute('''CREATE TABLE IF NOT EXISTS packets (
                     id INTEGER PRIMARY KEY,
