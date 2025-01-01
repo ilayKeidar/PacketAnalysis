@@ -7,11 +7,10 @@ from Objects.frame import Frame
 count = 0
 count2 = 0
 def create_packet_objects(packet, ip_address, mac_address):
+    
     global count 
-    global count2
     size = len(packet)
-    print(f"{count2}======{packet.summary()}")
-    count2 += 1
+
     if packet.haslayer('IP') and (packet.haslayer('TCP') or packet.haslayer('UDP')):        
         src_ip = packet['IP'].src
         dst_ip = packet['IP'].dst
