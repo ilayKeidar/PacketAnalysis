@@ -1,8 +1,9 @@
-from scapy.all import sniff
+from scapy.all import sniff, DNS
 
 def packet_callback(packet):
-    print(packet.summary())  # Display a one-line summary of each packet
+    if packet.haslayer(DNS):  # Check if the packet contains a DNS layer
+        print(packet.summary())  # Print a summary of the DNS packet
 
 # Start sniffing packets
-print("Sniffing packets... Press Ctrl+C to stop.")
-sniff(prn=packet_callback, timeout=20)  # Capture 10 packets
+print("Sniffing DNS packets... Press Ctrl+C to stop.")
+sniff(filter="udp port 53", prn=packet_callback, store=False)

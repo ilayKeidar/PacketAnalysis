@@ -1,15 +1,37 @@
-from scapy.all import sniff
+from collections import defaultdict
+from scapy.all import sniff, DNS
 
 from db_handler import insert_packet, insert_frame
 from Objects.packet import Packet
 from Objects.frame import Frame
 
 count = 0
-count2 = 0
+dns_packets = defaultdict(int) # domain : instances
+
+def dns_analysis(packet):
+    dns_packet = packet['DNS']
+
+    if dns_packet.qr == 0:
+        dns_info = dns_packet.qd.qname.decode()
+        dns_packets[dns_info] += 1
+
+
 def create_packet_objects(packet, ip_address, mac_address):
-    
+
+    if packet.haslayer('DNS'):
+        dns_analysis(packet)  
+
     global count 
     size = len(packet)
+
+    # if packet.haslayer(TCP) and packet[TCP].dport == 443:  # HTTPS traffic
+    # raw_data = bytes(packet[TCP].payload)
+    # if b'\x00\x00' in raw_data:  # Check for TLS handshake
+    #     sni_offset = raw_data.find(b'\x00\x00') + 5
+    #     sni_length = int.from_bytes(raw_data[sni_offset:sni_offset+2], 'big')
+    #     sni = raw_data[sni_offset+2:sni_offset+2+sni_length].decode()
+    #     print(f"SNI (Domain): {sni}")
+
 
     if packet.haslayer('IP') and (packet.haslayer('TCP') or packet.haslayer('UDP')):        
         src_ip = packet['IP'].src
@@ -48,12 +70,15 @@ def create_packet_objects(packet, ip_address, mac_address):
 
 
 def start_sniffer(interface, sniff_time, ip_address, mac_address):
-    print(f"Starting packet sniffer on interface: {interface}")
-    print(f"Monitoring IP: {ip_address}, MAC: {mac_address}")
 
     def sniffer_wrapper(packet):
         create_packet_objects(packet, ip_address, mac_address)
 
     sniff(iface=interface, prn=sniffer_wrapper, timeout=sniff_time, store=False)
-    print("Packet sniffer ended.")
+    print("SNIFFING ENDED\n")
 
+def return_dns():
+    return dict(dns_packets)
+
+def return_count():
+    return count

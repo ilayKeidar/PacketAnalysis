@@ -1,7 +1,7 @@
 from collections import defaultdict
 import sqlite3
 
-
+# based on port
 port_to_protocol = {
     20: 'FTP',
     21: 'FTP',
@@ -21,7 +21,8 @@ port_to_protocol = {
     8443: 'HTTPS',
     8888: 'HTTP',
 }
-# Frame Protocols 
+
+# based on scapy protocol numbering
 type_to_protocol = {
     2054: 'ARP',
     2048: 'IPv4',
@@ -62,4 +63,3 @@ def protocol_count():
 
     return dict(protocolCountMap), transport_counter
 
-print(protocol_count())

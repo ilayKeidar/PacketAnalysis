@@ -38,8 +38,4 @@ def get_total_size():
     sent = convert_bytes(sent)
     received = convert_bytes(received)
 
-    print(f"sent: {sent}")
-    print(f"received: {received}")    
-
-
-get_total_size()
+    return sent, received
