@@ -1,36 +1,46 @@
 from collections import defaultdict
-from scapy.all import sniff, DNS
+from scapy.all import sniff, DNS, DNSQR
 
 from db_handler import insert_packet, insert_frame
 from Objects.packet import Packet
 from Objects.frame import Frame
 
 count = 0
-dns_packets = defaultdict(int) # domain : instances
+dns_queries = defaultdict(int) # domain : instances
+snis = defaultdict(int)
 
 def dns_analysis(packet):
-    dns_packet = packet['DNS']
-
-    if dns_packet.qr == 0:
-        dns_info = dns_packet.qd.qname.decode()
-        dns_packets[dns_info] += 1
+    if packet.haslayer(DNSQR):
+        dns_query = packet[DNSQR].qname.decode('utf-8')
+        dns_queries[dns_query] += 1
 
 
 def create_packet_objects(packet, ip_address, mac_address):
 
-    if packet.haslayer('DNS'):
+    if packet.haslayer(DNS) and packet[DNS].opcode == 0: 
         dns_analysis(packet)  
 
     global count 
     size = len(packet)
 
-    # if packet.haslayer(TCP) and packet[TCP].dport == 443:  # HTTPS traffic
-    # raw_data = bytes(packet[TCP].payload)
-    # if b'\x00\x00' in raw_data:  # Check for TLS handshake
-    #     sni_offset = raw_data.find(b'\x00\x00') + 5
-    #     sni_length = int.from_bytes(raw_data[sni_offset:sni_offset+2], 'big')
-    #     sni = raw_data[sni_offset+2:sni_offset+2+sni_length].decode()
-    #     print(f"SNI (Domain): {sni}")
+    # if packet.haslayer('TCP') and packet['TCP'].dport == 443:  # HTTPS traffic
+    #     raw_data = bytes(packet['TCP'].payload)
+        
+    #     try:
+    #         # Check if the raw data contains a TLS ClientHello (indicated by \x16\x03)
+    #         if raw_data[:2] == b'\x16\x03':
+    #             # Locate the beginning of the SNI extension in the ClientHello
+    #             sni_offset = raw_data.find(b'\x00\x00') + 5  # Basic heuristic
+    #             if sni_offset >= 5:  # Ensure valid offset
+    #                 # Extract SNI length
+    #                 sni_length = int.from_bytes(raw_data[sni_offset:sni_offset+2], 'big')
+    #                 # Extract SNI string
+    #                 sni = raw_data[sni_offset+2:sni_offset+2+sni_length].decode('utf-8', errors='ignore')
+    #                 snis[sni] += 1
+    #     except (IndexError, UnicodeDecodeError, ValueError) as e:
+    #         # Handle errors gracefully (e.g., malformed packets or invalid offsets)
+    #         print(f"Error processing packet for SNI: {e}")
+
 
 
     if packet.haslayer('IP') and (packet.haslayer('TCP') or packet.haslayer('UDP')):        
@@ -75,10 +85,13 @@ def start_sniffer(interface, sniff_time, ip_address, mac_address):
         create_packet_objects(packet, ip_address, mac_address)
 
     sniff(iface=interface, prn=sniffer_wrapper, timeout=sniff_time, store=False)
-    print("SNIFFING ENDED\n")
+
 
 def return_dns():
-    return dict(dns_packets)
+    return dict(sorted(dns_queries.items(), key=lambda item: item[1], reverse=True))
 
 def return_count():
     return count
+
+def return_snis():
+    return dict(snis)
