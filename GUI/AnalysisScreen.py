@@ -35,7 +35,7 @@ class AnalysisScreen(QWidget):
         # Captured packets info
         self.captured_info = QLabel("Captured a total of 0 packets")
         self.captured_info.setFont(QFont("Arial", 11))
-        self.captured_info.setStyleSheet("color: #666")
+        self.captured_info.setStyleSheet("color: #FFF")
         
         # Create two columns
         device_info = QVBoxLayout()

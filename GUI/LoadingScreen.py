@@ -44,11 +44,17 @@ class LoadingScreen(QWidget):
         
         self.setLayout(layout)
 
-    def start_progress(self):
+    def start_progress(self, duration_seconds):
         self.progress = 0
+        self.progress_bar.setValue(0)
+        
+        # Calculate timer interval to have 100 steps over the duration
+        self.step_count = 100
+        self.timer_interval = int((duration_seconds * 1000) / self.step_count)
+        
         self.timer = QTimer()
         self.timer.timeout.connect(self.update_progress)
-        self.timer.start(100)
+        self.timer.start(self.timer_interval)  # Convert seconds to milliseconds
 
     def update_progress(self):
         self.progress += 1
