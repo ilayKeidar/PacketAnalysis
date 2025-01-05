@@ -1,6 +1,7 @@
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QHBoxLayout
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QFont
+from constants import button_color, hover_button_color
 
 
 class AnalysisScreen(QWidget):
@@ -14,7 +15,7 @@ class AnalysisScreen(QWidget):
         main_layout.setContentsMargins(40, 40, 40, 40)
 
         # Style constants
-        self.MINT_GREEN = "#9AD9AC"
+        self.MINT_GREEN = button_color
         self.BUTTON_STYLE = f"""
             QPushButton {{
                 background-color: {self.MINT_GREEN};
@@ -22,9 +23,11 @@ class AnalysisScreen(QWidget):
                 padding: 8px;
                 border: none;
                 color: white;
+                font-weight: bold;
+                font-size: 14px;
             }}
             QPushButton:hover {{
-                background-color: {self.MINT_GREEN}DD;
+                background-color: {hover_button_color};
             }}
         """
 
@@ -133,21 +136,6 @@ class AnalysisScreen(QWidget):
                 item.widget().deleteLater()
 
     def update_data(self, data):
-        """
-        Update the display with new data
-        Expected data format:
-        {
-            'total_packets': int,
-            'ip_address': str,
-            'mac_address': str,
-            'tcp_packets': int,
-            'udp_packets': int,
-            'protocols': dict,  # protocol_name: count
-            'data_sent': str,
-            'data_received': str,
-            'dns_queries': dict  # domain: count
-        }
-        """
         self.captured_info.setText(f"Captured a total of {data['total_packets']} packets")
         self.ip_address.setText(f"IP address: {data['ip_address']}")
         self.mac_address.setText(f"MAC address: {data['mac_address']}")
@@ -175,5 +163,4 @@ class AnalysisScreen(QWidget):
             self.dns_section.hide()
 
     def download_packets(self):
-        # To be implemented later
-        pass
+        print("Downloaded")

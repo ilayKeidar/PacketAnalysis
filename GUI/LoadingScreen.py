@@ -1,6 +1,8 @@
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QProgressBar
 from PyQt6.QtCore import Qt, QTimer
 from PyQt6.QtGui import QFont
+from constants import button_color
+
 
 class LoadingScreen(QWidget):
     def __init__(self, on_complete_callback):
@@ -14,7 +16,7 @@ class LoadingScreen(QWidget):
         layout.setContentsMargins(40, 40, 40, 40)
 
         # Style constants
-        self.MINT_GREEN = "#9AD9AC"
+        self.MINT_GREEN = button_color
 
         # Title
         title = QLabel("Sniffing...")

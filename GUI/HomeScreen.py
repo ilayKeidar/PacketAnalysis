@@ -3,7 +3,7 @@ from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel,
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QFont
 from user_data import INTERFACES
-
+from constants import button_color, hover_button_color
 
 class HomeScreen(QWidget):
     def __init__(self, on_start_callback):
@@ -17,7 +17,7 @@ class HomeScreen(QWidget):
         layout.setContentsMargins(40, 40, 40, 40)
 
         # Style constants
-        self.MINT_GREEN = "#9AD9AC"
+        self.MINT_GREEN = button_color
         self.BUTTON_STYLE = f"""
             QPushButton {{
                 background-color: {self.MINT_GREEN};
@@ -29,7 +29,7 @@ class HomeScreen(QWidget):
                 font-weight: bold;
             }}
             QPushButton:hover {{
-                background-color: "#6F9C7C";
+                background-color: {hover_button_color};
             }}
         """
         
