@@ -25,11 +25,11 @@ class HomeScreen(QWidget):
                 padding: 15px 30px;
                 border: none;
                 color: white;
-                font-size: 16px;
+                font-size: 18px;
                 font-weight: bold;
             }}
             QPushButton:hover {{
-                background-color: {self.MINT_GREEN}DD;
+                background-color: "#6F9C7C";
             }}
         """
         

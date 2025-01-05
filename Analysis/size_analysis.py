@@ -1,5 +1,6 @@
 import sqlite3
-IP_ADDRESS = '10.100.102.48'
+from user_data import IP_ADDRESS
+
 MAC_ADDRESS = '9a:22:ef:fa:fa:b7'
 
 # convert the bytes to the relevant unit
