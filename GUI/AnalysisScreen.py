@@ -5,6 +5,7 @@ from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import QFileDialog
 
 from constants import button_color, hover_button_color
+from Analysis.AI_analysis import AIAnalysisWindow, get_ai_analysis
 
 
 class AnalysisScreen(QWidget):
@@ -40,19 +41,19 @@ class AnalysisScreen(QWidget):
         # Title
         title = QLabel("Analysis")
         title.setFont(QFont("Arial", 24, QFont.Weight.Bold))
-        
-        # Download button
-        # download_button = QPushButton()
-        # download_button.setFixedSize(40, 40)
-        # download_button.setIcon(icons.DOWNLOAD)
-        # download_button.setIconSize(Qt.QSize(20, 20))
-        # download_button.setStyleSheet(self.BUTTON_STYLE)
-        # download_button.clicked.connect(self.download_packets)
+
 
         download_button = QPushButton("Download")
         download_button.setStyleSheet(self.BUTTON_STYLE)
         download_button.clicked.connect(self.download_packets)
-        
+
+
+        ai_button = QPushButton("AI Analysis")
+        ai_button.setStyleSheet(self.BUTTON_STYLE)
+        ai_button.clicked.connect(self.show_ai_analysis)
+        header_layout.addWidget(ai_button)
+        header_layout.addWidget(download_button)
+
         header_layout.addWidget(title)
         header_layout.addStretch()
         header_layout.addWidget(download_button)
@@ -206,3 +207,39 @@ class AnalysisScreen(QWidget):
                 print(f"Analysis saved to {file_path}")
             except Exception as e:
                 print(f"Failed to save file: {e}")
+
+
+    def show_ai_analysis(self):
+        # Gather all analysis data
+        analysis_data = (
+            f"{self.captured_info.text()}\n"
+            f"Device Info:\n"
+            f"{self.ip_address.text()}\n"
+            f"{self.mac_address.text()}\n\n"
+            f"Data Transfer:\n"
+            f"{self.data_sent.text()}\n"
+            f"{self.data_received.text()}\n\n"
+            f"Transport Counts:\n"
+            f"{self.tcp_count.text()}\n"
+            f"{self.udp_count.text()}\n\n"
+            f"Active Protocols:\n"
+        )
+        
+        # Add protocols
+        for i in range(self.protocols_labels.count()):
+            protocol_label = self.protocols_labels.itemAt(i).widget()
+            analysis_data += f"{protocol_label.text()}\n"
+        
+        # Add DNS queries if visible
+        if self.dns_section.isVisible():
+            analysis_data += "\nDNS Queries:\n"
+            for i in range(self.dns_queries.count()):
+                query_label = self.dns_queries.itemAt(i).widget()
+                analysis_data += f"{query_label.text()}\n"
+
+        # Get AI analysis
+        ai_summary = get_ai_analysis(analysis_data)
+        
+        # Show analysis window
+        analysis_window = AIAnalysisWindow(ai_summary, self)
+        analysis_window.exec()
