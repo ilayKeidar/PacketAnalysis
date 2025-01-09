@@ -1,0 +1,28 @@
+Analysis Report:2025-01-09 15:44:31
+
+IP address: 10.100.102.48
+MAC address: 9A:22:EF:FA:FA:B7
+
+
+Captured a total of 427 packets
+
+Transport Counts:
+TCP: 42 packets
+UDP: 385 packets
+
+Data Transferred:
+Sent: 65.57 KB
+Received: 141.19 KB
+
+Active Protocols:
+  DNS: 28 packets
+  HTTPS: 393 packets
+
+DNS Queries:
+  www.google.com. (4 queries)
+  beacons.gcp.gvt2.com. (4 queries)
+  ogads-pa.clients6.google.com. (4 queries)
+  encrypted-tbn0.gstatic.com. (4 queries)
+  www.facebook.com. (4 queries)
+  play.google.com. (4 queries)
+  static.xx.fbcdn.net. (4 queries)

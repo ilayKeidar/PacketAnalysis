@@ -1,6 +1,9 @@
+from datetime import datetime
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton, QHBoxLayout
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QFont
+from PyQt6.QtWidgets import QFileDialog
+
 from constants import button_color, hover_button_color
 
 
@@ -129,7 +132,6 @@ class AnalysisScreen(QWidget):
         self.setLayout(main_layout)
 
     def clear_dynamic_labels(self, layout):
-        """Helper function to clear all widgets from a layout"""
         while layout.count():
             item = layout.takeAt(0)
             if item.widget():
@@ -163,4 +165,44 @@ class AnalysisScreen(QWidget):
             self.dns_section.hide()
 
     def download_packets(self):
-        print("Downloaded")
+
+        current_datetime = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+        formatted_date = datetime.now().strftime("%d-%m-%Y")
+
+        content = (
+        f"Analysis Report:\n"
+        f"{current_datetime}\n"
+        f"\n{self.ip_address.text()}\n"
+        f"{self.mac_address.text()}\n\n"
+        f"\n{self.captured_info.text()}\n\n"
+        f"Data Transferred:\n{self.data_sent.text()}\n{self.data_received.text()}\n\n"
+        f"Transport Counts:\n{self.tcp_count.text()}\n{self.udp_count.text()}\n\n"
+        f"Active Protocols:\n"
+        )
+    
+        # Add protocols
+        for i in range(self.protocols_labels.count()):
+            protocol_label = self.protocols_labels.itemAt(i).widget()
+            content += f"{protocol_label.text()}\n"
+        
+        # Add DNS queries
+        if self.dns_section.isVisible():
+            content += "\nDNS Queries:\n"
+            for i in range(self.dns_queries.count()):
+                query_label = self.dns_queries.itemAt(i).widget()
+                content += f"{query_label.text()}\n"
+
+        # Open a file dialog to save the file
+        suggested_filename = f"analysis_{formatted_date}.txt"
+        file_path, _ = QFileDialog.getSaveFileName(
+            self, "Save Analysis", suggested_filename, "Text Files (*.txt);;All Files (*)"
+        )
+        
+        # Save the content if a path is selected
+        if file_path:
+            try:
+                with open(file_path, "w") as file:
+                    file.write(content)
+                print(f"Analysis saved to {file_path}")
+            except Exception as e:
+                print(f"Failed to save file: {e}")

@@ -1,4 +1,4 @@
-sniff_time = 30
+sniff_time = 60
 interface = "Wi-Fi"
 
 ignore_domains = []
