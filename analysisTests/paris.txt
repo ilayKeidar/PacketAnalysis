@@ -1,0 +1,38 @@
+Analysis Report:
+09/01/2025 16:51:09
+
+IP address: 10.100.102.48
+MAC address: 9A:22:EF:FA:FA:B7
+
+
+Captured a total of 3391 packets
+
+Data Transferred:
+Sent: 323.12 KB
+Received: 1.53 MB
+
+Transport Counts:
+TCP: 1106 packets
+UDP: 2285 packets
+
+Active Protocols:
+HTTPS: 2921 packets
+DNS: 449 packets
+
+DNS Queries:
+www.googleadservices.com. (6 queries)
+ad.doubleclick.net. (6 queries)
+play.google.com. (4 queries)
+www.skyscanner.co.il. (4 queries)
+ogads-pa.clients6.google.com. (2 queries)
+www.gstatic.com. (2 queries)
+content-autofill.googleapis.com. (2 queries)
+accounts.google.com. (2 queries)
+safebrowsing.google.com. (2 queries)
+beacons.gcp.gvt2.com. (2 queries)
+js.skyscnr.com. (2 queries)
+gum.criteo.com. (2 queries)
+sync.targeting.unrulymedia.com. (2 queries)
+cdn.aralego.net. (2 queries)
+ssl.gstatic.com. (2 queries)
+tunnel.googlezip.net. (1 queries)

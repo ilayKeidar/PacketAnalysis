@@ -1,0 +1,54 @@
+Analysis Report:
+10/01/2025 00:53:47
+
+IP address: 10.100.102.48
+MAC address: 9A:22:EF:FA:FA:B7
+
+
+Captured a total of 3683 packets
+
+Data Transferred:
+Sent: 467.61 KB
+Received: 1.85 MB
+
+Transport Counts:
+TCP: 2082 packets
+UDP: 1601 packets
+
+Active Protocols:
+DNS: 460 packets
+HTTPS: 3204 packets
+HTTP: 7 packets
+
+DNS Queries:
+ogads-pa.clients6.google.com. (8 queries)
+play.google.com. (8 queries)
+tunnel.googlezip.net. (5 queries)
+www.checkpoint.com. (5 queries)
+cdcvps.cloudapps.cisco.com. (5 queries)
+docs.github.com. (4 queries)
+encrypted-tbn0.gstatic.com. (4 queries)
+www.googleadservices.com. (4 queries)
+id.google.com. (4 queries)
+accounts.google.com. (4 queries)
+safebrowsing.google.com. (4 queries)
+checkpoint.com. (4 queries)
+static.addtoany.com. (4 queries)
+www.googletagmanager.com. (4 queries)
+dsc.cisco.com. (4 queries)
+wpad.home. (2 queries)
+www.cisco.com. (2 queries)
+cisco.demdex.net. (2 queries)
+content-autofill.googleapis.com. (2 queries)
+www.cloudflare.com. (2 queries)
+cf-assets.www.cloudflare.com. (2 queries)
+static.cloudflareinsights.com. (2 queries)
+challenges.cloudflare.com. (2 queries)
+performance.radar.cloudflare.com. (2 queries)
+ot.www.cloudflare.com. (2 queries)
+benchmark.1e100cdn.net. (2 queries)
+cm.everesttech.net. (2 queries)
+cloudflareinc.demdex.net. (2 queries)
+www.google.com. (2 queries)
+www.ibm.com. (2 queries)
+cdn.appdynamics.com. (1 queries)

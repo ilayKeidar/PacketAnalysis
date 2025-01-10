@@ -35,28 +35,37 @@ class AnalysisScreen(QWidget):
             }}
         """
 
-        # Header layout with title and download button
+        # Header layout with title and buttons
         header_layout = QHBoxLayout()
         
-        # Title
+        # Title - now placed first
         title = QLabel("Analysis")
         title.setFont(QFont("Arial", 24, QFont.Weight.Bold))
-
-
-        download_button = QPushButton("Download")
-        download_button.setStyleSheet(self.BUTTON_STYLE)
-        download_button.clicked.connect(self.download_packets)
-
-
-        ai_button = QPushButton("AI Analysis")
+        header_layout.addWidget(title)
+        
+        # Add stretch to push buttons to the right
+        header_layout.addStretch()
+        
+        # Create buttons container for proper spacing
+        buttons_container = QHBoxLayout()
+        buttons_container.setSpacing(10)  # Add space between buttons
+        
+        # AI Analysis button
+        ai_button = QPushButton("AI Analysis ⯌")
         ai_button.setStyleSheet(self.BUTTON_STYLE)
         ai_button.clicked.connect(self.show_ai_analysis)
-        header_layout.addWidget(ai_button)
-        header_layout.addWidget(download_button)
-
-        header_layout.addWidget(title)
-        header_layout.addStretch()
-        header_layout.addWidget(download_button)
+        
+        # Download button
+        download_button = QPushButton("Download ⇓")
+        download_button.setStyleSheet(self.BUTTON_STYLE)
+        download_button.clicked.connect(self.download_packets)
+        
+        # Add buttons to container
+        buttons_container.addWidget(ai_button)
+        buttons_container.addWidget(download_button)
+        
+        # Add buttons container to header layout
+        header_layout.addLayout(buttons_container)
         
         self.captured_info = QLabel("Captured a total of 0 packets")
         self.captured_info.setFont(QFont("Arial", 11))

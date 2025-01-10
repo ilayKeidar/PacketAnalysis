@@ -10,38 +10,21 @@ dns_queries = defaultdict(int) # domain : instances
 snis = defaultdict(int)
 
 def dns_analysis(packet):
-    if packet.haslayer(DNSQR):
-        dns_query = packet[DNSQR].qname.decode('utf-8')
-        dns_queries[dns_query] += 1
+    if packet[DNS].opcode == 0:
+        if packet.haslayer(DNSQR):
+            dns_query = packet[DNSQR].qname.decode('utf-8')
+            dns_queries[dns_query] += 1
+    else:
+        dns_queries["None"] += 1
 
 
 def create_packet_objects(packet, ip_address, mac_address):
+    global count 
 
-    if packet.haslayer(DNS) and packet[DNS].opcode == 0: 
+    if packet.haslayer(DNS):
         dns_analysis(packet)  
 
-    global count 
     size = len(packet)
-
-    # if packet.haslayer('TCP') and packet['TCP'].dport == 443:  # HTTPS traffic
-    #     raw_data = bytes(packet['TCP'].payload)
-        
-    #     try:
-    #         # Check if the raw data contains a TLS ClientHello (indicated by \x16\x03)
-    #         if raw_data[:2] == b'\x16\x03':
-    #             # Locate the beginning of the SNI extension in the ClientHello
-    #             sni_offset = raw_data.find(b'\x00\x00') + 5  # Basic heuristic
-    #             if sni_offset >= 5:  # Ensure valid offset
-    #                 # Extract SNI length
-    #                 sni_length = int.from_bytes(raw_data[sni_offset:sni_offset+2], 'big')
-    #                 # Extract SNI string
-    #                 sni = raw_data[sni_offset+2:sni_offset+2+sni_length].decode('utf-8', errors='ignore')
-    #                 snis[sni] += 1
-    #     except (IndexError, UnicodeDecodeError, ValueError) as e:
-    #         # Handle errors gracefully (e.g., malformed packets or invalid offsets)
-    #         print(f"Error processing packet for SNI: {e}")
-
-
 
     if packet.haslayer('IP') and (packet.haslayer('TCP') or packet.haslayer('UDP')):        
         src_ip = packet['IP'].src
